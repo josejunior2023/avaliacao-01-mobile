@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import AcTionSobre from "@/components/actionSobre";
 
 const Sobre = () => {
   const handleOpenGitHub = () => {
@@ -15,24 +13,19 @@ const Sobre = () => {
   };
 
   return (
-    <ActionSheetProvider>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>Sobre</Text>
-          <AcTionSobre />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}></View>
 
-        <View style={styles.card}>
-          <Text style={styles.cardText}>DESENVOLVIDO POR</Text>
-          <Text style={styles.cardText}>JOSÉ ALBANIR DE RE JÚNIOR</Text>
-          <TouchableOpacity onPress={handleOpenGitHub}>
-            <Text style={[styles.cardText, styles.cardLink]}>
-              GitHub: https://github.com/josejunior2023/avaliacao-01-mobile
-            </Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.card}>
+        <Text style={styles.cardText}>DESENVOLVIDO POR</Text>
+        <Text style={styles.cardText}>JOSÉ ALBANIR DE RE JÚNIOR</Text>
+        <TouchableOpacity onPress={handleOpenGitHub}>
+          <Text style={[styles.cardText, styles.cardLink]}>
+            GitHub: https://github.com/josejunior2023/avaliacao-01-mobile
+          </Text>
+        </TouchableOpacity>
       </View>
-    </ActionSheetProvider>
+    </View>
   );
 };
 
@@ -42,11 +35,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "gray",
-  },
-  title: {
-    fontSize: 20,
-    color: "white",
-    fontWeight: "bold",
   },
   headerContainer: {
     flexDirection: "row",

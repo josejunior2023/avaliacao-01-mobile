@@ -1,104 +1,77 @@
 import React from "react";
-import { SectionList, Text, View, Image, StyleSheet } from "react-native";
-import { organizeByOrigin } from "../helpers/helper";
-import AcTion from "../components/action";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { SectionList, Text, View, StyleSheet, Image } from "react-native";
+import { organizeByCountry } from "../helpers/helper";
 
 const Lista = () => {
-  const sections = organizeByOrigin();
+  const groupedData = organizeByCountry();
+
+  const renderItem = ({
+    item,
+  }: {
+    item: (typeof groupedData)[0]["data"][0];
+  }) => (
+    <View style={styles.item}>
+      <Image source={{ uri: item.passenger_avatar }} style={styles.avatar} />
+      <View style={styles.textContainer}>
+        <Text style={styles.name}>{item.passenger_name}</Text>
+        <Text>{`${item.origin} → ${item.destination}`}</Text>
+      </View>
+    </View>
+  );
+
+  const renderSectionHeader = ({
+    section: { title },
+  }: {
+    section: { title: string };
+  }) => (
+    <View style={styles.header}>
+      <Text style={styles.headerText}>{title}</Text>
+    </View>
+  );
 
   return (
-    <ActionSheetProvider>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>Lista</Text>
-          <AcTion />
-        </View>
-
-        <SectionList
-          sections={sections}
-          keyExtractor={(item) => item.id.toString()}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.header}>{title}</Text>
-          )}
-          renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
-              <Image
-                source={{ uri: item.passenger_avatar }}
-                style={styles.avatar}
-              />
-              <View>
-                <Text style={styles.name}>{item.passenger_name}</Text>
-                <Text style={styles.details}>
-                  Origem: {item.origin} - Destino: {item.destination}
-                </Text>
-              </View>
-            </View>
-          )}
-        />
-      </View>
-    </ActionSheetProvider>
+    <View style={styles.container}>
+      <SectionList
+        sections={groupedData}
+        keyExtractor={(item, index) => item.passenger_name + index}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+      />
+    </View>
   );
 };
-
-export default Lista;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "gray",
   },
-  headerContainer: {
-    flexDirection: "row",
-    backgroundColor: "black",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#FFF",
-  },
-  details: {
-    fontSize: 14,
-    color: "#666",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-  },
   header: {
-    fontSize: 17,
-    marginTop: 10,
-    marginBottom: 3,
-    margin: 10,
-    fontWeight: "bold",
-    borderRadius: 1,
     backgroundColor: "gray",
-    padding: 1,
-    color: "black",
+    padding: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  item: {
+    flexDirection: "row",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   avatar: {
-    borderRadius: 10,
-    width: 37,
-    height: 37,
-    marginRight: 10,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
-  itemContainer: {
-    flexDirection: "row",
-    backgroundColor: "black",
-    fontSize: 15,
-    alignItems: "center",
-    padding: 10,
-    margin: 10,
-    marginBottom: 3,
-    borderRadius: 1,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 1,
+  textContainer: {
+    marginLeft: 10,
+    justifyContent: "center",
+  },
+  name: {
+    fontWeight: "bold",
   },
 });
+
+export default Lista;
